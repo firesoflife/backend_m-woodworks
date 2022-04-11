@@ -265,4 +265,4 @@ Set-up
 You should now have all your models and controllers set up
 
 Now we need to enter some data - there are a few ways to do this. Because we've build this app to be a CRUD app, we can simply create some Projects, Galleries, and add our Images with a front-end interface, or an app that handles our HTTP requests. For my purposes, I have a set of data that is required and provided so I've prepped a seed file to populate the database tables mapped to their appropriate associations.
-The file can be found here:
+The file can be found here: https://github.com/firesoflife/backend_m-woodworks/blob/71a791b5c8c4f46efac8ded5a09242dbccc982e9/db/seeds.rb#L1
