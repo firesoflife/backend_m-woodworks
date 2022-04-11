@@ -172,7 +172,7 @@ Set-up
 
 3. Now we will build the Models and Controllers for our Gallery, but we will build them separately instead of using the `scaffold` command.
 
-   - Build the Gallery model by running `rails g model gallery image_url cover_image_url`
+   - Build the Gallery model by running `rails g model gallery title cover_image_url alt_text`
    - Build the Gallery controller by runnig `rails g controller gallery`
 
 4. Association -- Let's make these models work together. We want each project to have one gallery. To make the association, run `rails g migration AddReferencesToGalleries project:references` then follow that with `rails db:migrate`
@@ -263,3 +263,6 @@ Set-up
 4. Migrate your new references: `rails db:migrate`
 
 You should now have all your models and controllers set up
+
+Now we need to enter some data - there are a few ways to do this. Because we've build this app to be a CRUD app, we can simply create some Projects, Galleries, and add our Images with a front-end interface, or an app that handles our HTTP requests. For my purposes, I have a set of data that is required and provided so I've prepped a seed file to populate the database tables mapped to their appropriate associations.
+The file can be found here:
