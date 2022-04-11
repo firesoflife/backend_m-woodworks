@@ -40,11 +40,8 @@ class ImagesController < ApplicationController
   end
 
   private
-  
-    # Only allow a list of trusted parameters through.
-    def image_params
-      
-      params.permit(:id, :image_url, :alt_text, :gallery_id)
-
-    end
+  # Only allow a list of trusted parameters through.
+  def image_params
+    params.permit(:id, :image_url, :alt_text, :gallery_id)
+  end
 end
