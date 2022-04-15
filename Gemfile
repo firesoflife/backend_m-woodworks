@@ -26,6 +26,8 @@ gem "bcrypt", "~> 3.1.7"
 
 gem 'jwt'
 
+
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
@@ -46,5 +48,6 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'erd', '~> 0.8.1'
 end
 

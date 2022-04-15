@@ -8,8 +8,18 @@ Authentication
 
 Associations
 
--
+- https://blog.dennisokeeffe.com/blog/2022-03-16-understanding-rails-associations
+- https://medium.com/swlh/a-step-by-step-guide-to-using-the-rails-console-to-test-rails-models-associations-and-validations-986f4825aadf
 - https://joshfrankel.me/blog/create-a-many-to-many-activerecord-association-in-ruby-on-rails/
+- https://stevepolito.design/blog/rails-authentication-from-scratch/
+
+Working with images
+
+- https://betterprogramming.pub/how-to-upload- images-to-a-rails-api-and-get-them-back-again-b7b3e1106a13
+- https://dev.to/vetswhocode/react-tutorial-upload-and-fetch-photos-with-cloudinary-2ec9
+- https://hackernoon.com/image-storage-in-rails-apps-using-cloudinary-and-active-storage-9w2u3yli
+- https://medium.com/@anaharris/how-to-add-image-upload-functionality-to-your-rails-app-9f7fc3f3d042
+- https://www.microverse.org/blog/how-to-build-an-image-upload-feature-with-rails-and-active-storage
 
 ## Steps
 
@@ -189,14 +199,14 @@ Set-up
      def index
    @galleries = Gallery.all
 
-    render json: @galleries
+    render json: @galleries, status: :ok
    end
 
 
    # GET /galleries/1
 
    def show
-   render json: @project
+   render json: @gallery, status: :ok
    end
 
 
@@ -262,7 +272,24 @@ Set-up
 
 4. Migrate your new references: `rails db:migrate`
 
+5. A few changes in the `images_controller.rb` are required to return an image by `id`. In the show action in the image controller change it to the following:
+
+```
+# app/controllers/images_controller.rb
+
+def show
+  @image = Image.find(params[:id])
+  render json: @image, status: :ok
+end
+```
+
 You should now have all your models and controllers set up
 
 Now we need to enter some data - there are a few ways to do this. Because we've build this app to be a CRUD app, we can simply create some Projects, Galleries, and add our Images with a front-end interface, or an app that handles our HTTP requests. For my purposes, I have a set of data that is required and provided so I've prepped a seed file to populate the database tables mapped to their appropriate associations.
 The file can be found here: https://github.com/firesoflife/backend_m-woodworks/blob/71a791b5c8c4f46efac8ded5a09242dbccc982e9/db/seeds.rb#L1
+
+For the sake of brevity, I won't go over testing our actions and routes here. I usually reach for a tool like Postman to test my HTTP requests.
+
+## Part II -- Coming soon
+
+In part 2, we will create and make associations for a user authentication

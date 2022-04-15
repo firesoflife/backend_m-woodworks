@@ -1,17 +1,17 @@
 class ImagesController < ApplicationController
-  before_action  only: %i[ show create update destroy ]
   skip_before_action :authenticate_request
+  before_action  only: %i[show create update destroy]
 
   # GET /images
   def index
     @images = Image.all
-
-    render json: @images
+    render json: @images, status: :ok
   end
 
   # GET /images/1
   def show
-    render json: @image
+    @image = Image.find(params[:id])
+    render json: @image, status: :ok
   end
 
   # POST /images
@@ -40,6 +40,12 @@ class ImagesController < ApplicationController
   end
 
   private
+  
+  def set_imgage
+    @image = Image.find(params[:id])
+  end
+
+
   # Only allow a list of trusted parameters through.
   def image_params
     params.permit(:id, :image_url, :alt_text, :gallery_id)

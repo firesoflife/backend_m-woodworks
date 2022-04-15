@@ -1,16 +1,16 @@
-class GalleryController < ApplicationController
+class GalleriesController < ApplicationController
+  before_action :set_gallery, only: %i[show]
   skip_before_action :authenticate_request
 
   #GET /galleries
   def index
     @galleries = Gallery.all
-
-    render json: @galleries
+    render json: @galleries, status: :ok
   end
 
   # GET /galleries/1
   def show
-    render json: @project
+    render json: @gallery, status: :ok
   end
 
   # POST /galleries
