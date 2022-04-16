@@ -6,12 +6,12 @@ class ProjectsController < ApplicationController
   def index
     @projects = Project.all
 
-    render json: @projects
+    render json: @projects, include: ['images', 'gallery.images']
   end
 
   # GET /projects/1
   def show
-    render json: @project
+    render json: @project, include: ['images', 'gallery.images']
   end
 
   # POST /projects

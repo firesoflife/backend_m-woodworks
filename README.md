@@ -12,6 +12,7 @@ Associations
 - https://medium.com/swlh/a-step-by-step-guide-to-using-the-rails-console-to-test-rails-models-associations-and-validations-986f4825aadf
 - https://joshfrankel.me/blog/create-a-many-to-many-activerecord-association-in-ruby-on-rails/
 - https://stevepolito.design/blog/rails-authentication-from-scratch/
+- https://medium.com/@maxfpowell/a-quick-intro-to-rails-serializers-b390ced1fce7
 
 Working with images
 
@@ -290,6 +291,100 @@ The file can be found here: https://github.com/firesoflife/backend_m-woodworks/b
 
 For the sake of brevity, I won't go over testing our actions and routes here. I usually reach for a tool like Postman to test my HTTP requests.
 
+## Update - Data Fetching, Front-End Nightmares and Serializer Saviours
+
+Ok, Before you get excited about all this and start building out your front end, let me save you a head-ache. I spend days ... yes, days, trying to make my models "mesh" in React and without some fancy pants javascript and and excessive number of requests to the server, parsing out the data isn't easy. I'm sure it's possible, but after some time, and remembering some content I'd come across using Serializers, this seems the most logical route.
+
+### Active Model Serializer
+
+What is it? Think of it as a way to return all your model data you created in Rails with all of its associations in a neatly organized JSON file. Seeing it in action will make more sense. The main problem before using a serializer in my Rails API
+was that my association were present in the database, but upon fetching the data in the front end, the data fetched renders as decoupled forcing further requests and more javascript to bring them together. The returned JSON via a serializer will allow us to rejoin our associated models via nested objects. Let's get into it.
+
+1. The first thing to do is to add our Serializer Gem to our Gemfile
+
+- Add this to the Gemfile `gem 'active_model_serializers', '~> 0.10.13'`
+- now run `bundle` in your terminal
+
+2. run the generator for all the models in all the terminal
+
+- rails g serializer user
+- rails g serializer gallery
+- rails g serializer image
+- rails g serializer project
+
+3. If your rails server is running, stop it and give it a restart or your new serializers won't be recognized and you'll find yourself debugging a non-existent problem for 10 minutes, like I did. Now when you fetch your data, it will appear as though we lost all our exposed endpoints except for the id. Let's fix that.
+
+4. In the `project_serializer.rb` lets add some attributes to expose to our front end application. Edit the file to look as follows:
+
+```
+class ProjectSerializer < ActiveModel::Serializer
+  attributes :id, :project_name, :project_tags, :project_type, :description
+end
+```
+
+5. Add our association to the `project_serializer.rb` so we can get acess to our gallery data in the same http request. The file will now loo like this:
+
+```
+class ProjectSerializer < ActiveModel::Serializer
+  attributes :id, :project_name, :project_tags, :project_type, :description
+
+  has_one :gallery
+end
+```
+
+6. Change the `gallery_serializer.rb` so that it exposes the parts of the object we need, as follows:
+
+```
+class GallerySerializer < ActiveModel::Serializer
+  attributes :id, :cover_image_url, :project_id, :alt_text, :title
+
+  has_many :images
+end
+```
+
+Now, when we make a request to our projects endpoint we should see something magical has occurred. Use a fetch client if you want, or just navigate to your projects route in the browser. You will now see your Project object with your gallery object nested beneath it - super easy to work with in the front-end.
+
+7. The default behaviour of a serializer is to only nest objects one level deep, so if we want to have our arrays of images nested under the gallery, we need to either create an initializer for our serializer or, or to tell our project controller what we want to include in the render:
+
+_Method One - create an intializer_
+
+```
+# /config/initializers/active_model_serializer.rb
+ActiveModelSerializers.config.default_includes = '**'
+```
+
+_Method Two - change the `project_controller.rb`, `index` and `show` methods_:
+
+```
+# app/controlers/projects_controller.rb
+
+def index
+  @projects = Project.all
+
+  render json: @projects, include: ['images', 'gallery.images']
+end
+
+def show
+  render json: @project, include: ['images', 'gallery.images']
+end
+```
+
+I've opted for method two in my implementation.
+
+... And that's it. Fetching our data will become a whole lot easier now. In the second part of this article, we will bring the beauty of serilizers to our Users model.
+
 ## Part II -- Coming soon
 
 In part 2, we will create and make associations for a user authentication
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```
