@@ -10,9 +10,16 @@ class ImagesController < ApplicationController
 
   # GET /images/1
   def show
-    @image = Image.find(params[:id])
-    render json: @image, status: :ok
+    # @image = Image.find(params[:id])
+    # render json: @image, status: :ok
+
+    # @images = Image.find_each(params[:id])
+
+    @images = Image.where(gallery_id: params[:id]  .split(','))
+
+    render json: @images, status: :ok
   end
+
 
   # POST /images
   def create
@@ -39,9 +46,11 @@ class ImagesController < ApplicationController
     @image.destroy
   end
 
+  
+
   private
   
-  def set_imgage
+  def set_image
     @image = Image.find(params[:id])
   end
 
