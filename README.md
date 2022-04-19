@@ -376,15 +376,3 @@ I've opted for method two in my implementation.
 ## Part II -- Coming soon
 
 In part 2, we will create and make associations for a user authentication
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```

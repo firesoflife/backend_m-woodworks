@@ -48,6 +48,6 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-  gem 'erd', '~> 0.8.1'
+  # gem 'erd', '~> 0.8.1', require: true
 end
 
